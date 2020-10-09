@@ -3,15 +3,17 @@ package Controllers;
 import Entities.User;
 import Helpers.AuthHelper;
 import Helpers.HibernateHelper;
+import com.cedarsoftware.util.io.JsonWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import shared.ButtonMethod;
+
 
 public class LoginControllerHelper extends ControllerHelperBase {
 
@@ -23,14 +25,18 @@ public class LoginControllerHelper extends ControllerHelperBase {
 
     @Override
     public void doPost() throws ServletException, IOException {
-        switch (request.getParameter("buttonName")) {
+        String buttonName = request.getParameter("buttonName");
+        switch (buttonName) {
             case "register":
                 registerMethod();
+                break;
             case "login":
                 loginMethod();
+                break;
             default:
                 break;
         }
+     
     }
 
     public void registerMethod() throws IOException {
@@ -49,7 +55,7 @@ public class LoginControllerHelper extends ControllerHelperBase {
         response.sendRedirect("/DndBuddy/login/login.jsp");
     }
 
-    public void loginMethod() throws IOException {
+    public void loginMethod() throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -65,7 +71,13 @@ public class LoginControllerHelper extends ControllerHelperBase {
         String passwordHash = AuthHelper.getSecurePassword(password, user.getPasswordSalt());
         if (user.getPasswordHash().equals(passwordHash)) {
             //success
-            response.sendRedirect("/DndBuddy/");
+            String jsonStr = JsonWriter.objectToJson(user);
+            Cookie userCookie = new Cookie("user", jsonStr);
+            userCookie.setPath("/");
+            response.addCookie(userCookie);
+            
+            response.sendRedirect("/DndBuddy/dashboard");
+            
         } else {
             //do something
             return;
