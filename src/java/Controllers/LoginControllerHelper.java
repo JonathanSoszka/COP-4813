@@ -14,13 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class LoginControllerHelper extends ControllerHelperBase {
 
-    public LoginControllerHelper(HttpServlet servlet,
-            HttpServletRequest request,
-            HttpServletResponse response) {
-        super(servlet, request, response);
+    @Override
+    public void doGet() throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
     @Override
@@ -36,7 +34,7 @@ public class LoginControllerHelper extends ControllerHelperBase {
             default:
                 break;
         }
-     
+
     }
 
     public void registerMethod() throws IOException {
@@ -70,14 +68,13 @@ public class LoginControllerHelper extends ControllerHelperBase {
 
         String passwordHash = AuthHelper.getSecurePassword(password, user.getPasswordSalt());
         if (user.getPasswordHash().equals(passwordHash)) {
-            //success
             String jsonStr = JsonWriter.objectToJson(user);
             Cookie userCookie = new Cookie("user", jsonStr);
             userCookie.setPath("/");
             response.addCookie(userCookie);
-            
-            response.sendRedirect("/DndBuddy/dashboard");
-            
+
+            response.sendRedirect("/DndBuddy");
+
         } else {
             //do something
             return;

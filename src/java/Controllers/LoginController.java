@@ -7,12 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginController extends HttpServlet {
-
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        LoginControllerHelper helper = new LoginControllerHelper(this, request, response);
-        helper.doPost();
+public class LoginController extends ControllerBase {
+    public LoginController() {
+        super(new LoginControllerHelper());
     }
-
 }

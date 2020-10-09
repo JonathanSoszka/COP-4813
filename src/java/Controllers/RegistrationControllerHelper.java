@@ -5,11 +5,8 @@
  */
 package Controllers;
 
-import Entities.User;
-import com.cedarsoftware.util.io.JsonReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,20 +15,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jonathan
  */
-public class DashboardControllerHelper extends ControllerHelperBase {
-
+public class RegistrationControllerHelper
+        extends ControllerHelperBase {
 
     @Override
     public void doGet() throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-        User user = (User) getCookieAsObject("user");
-        if (user != null) {
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("/DndBuddy/login");
-        }
-
+        request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
 
 }

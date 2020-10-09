@@ -1,10 +1,13 @@
 package Controllers;
 
+import Entities.User;
+import com.cedarsoftware.util.io.JsonReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,24 +21,33 @@ import shared.ButtonMethod;
 
 public class ControllerHelperBase {
 
-    private Method methodDefault = null;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpServlet servlet;
     protected Logger logger;
+    protected static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+    protected static final Validator validator = validatorFactory.getValidator();
+    java.util.Map<String, String> errorMap = new java.util.HashMap<String, String>();
 
-    public ControllerHelperBase(HttpServlet servlet,
+    public void InitHelperBase(HttpServlet servlet,
             HttpServletRequest request,
             HttpServletResponse response) {
         this.servlet = servlet;
         this.request = request;
         this.response = response;
     }
-    protected static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
-    protected static final Validator validator = validatorFactory.getValidator();
+    public void doGet()
+            throws ServletException, IOException {
+        response.getWriter().print("The doGet method must be overridden"
+                + " in the class that extends HelperBase.");
+    }
 
-    java.util.Map<String, String> errorMap = new java.util.HashMap<String, String>();
+    public void doPost()
+            throws ServletException, IOException {
+        response.getWriter().print("The doPost method must be overridden"
+                + " in the class that extends HelperBase.");
+    }
 
     public void setErrors(Object data) {
 
@@ -71,15 +83,33 @@ public class ControllerHelperBase {
         return msg == null || msg.equals("");
     }
 
-    protected void doGet()
-            throws ServletException, IOException {
-        response.getWriter().print("The doGet method must be overridden"
-                + " in the class that extends HelperBase.");
+    protected Cookie getCookie(String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie;
+                }
+            }
+        }
+        return null;
     }
 
-    protected void doPost()
-            throws ServletException, IOException {
-        response.getWriter().print("The doPost method must be overridden"
-                + " in the class that extends HelperBase.");
+    protected String getCookieValue(String cookieName) {
+        Cookie cookie = getCookie(cookieName);
+        if (cookie == null) {
+            return null;
+        }
+
+        return cookie.getValue();
+    }
+
+    protected Object getCookieAsObject(String cookieName) throws IOException {
+        String cookieString = getCookieValue(cookieName);
+        if (cookieString == null) {
+            return null;
+        }
+
+        return JsonReader.jsonToJava(cookieString);
     }
 }
