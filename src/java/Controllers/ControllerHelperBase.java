@@ -54,30 +54,30 @@ public class ControllerHelperBase {
     }
 
     /*Request Helper Methods*/
+    
+    //returns absolute path to the provided JSP
     protected String jspLocation(String page) {
         return "/WEB-INF/" + page;
     }
 
+    //returns absolute path to the provided controller
     protected String controllerLocation(String controller) {
         return "/DndBuddy/" + controller;
     }
 
+    //navigate to a controller with a new GET request
     protected void redirectToController(String controller) throws IOException {
         response.sendRedirect(controllerLocation(controller));
-
     }
 
-    protected void redirectToJsp(String jsp) throws IOException {
-        response.sendRedirect(jspLocation(jsp));
-    }
-
+    //forwards the current request to a controller
     protected void forwardToController(String controller) throws ServletException, IOException {
         request.getRequestDispatcher(controllerLocation(controller)).forward(request, response);
     }
 
+    //forwards the current request to a JSP
     protected void forwardToJsp(String jsp) throws ServletException, IOException {
         request.getRequestDispatcher(jspLocation(jsp)).forward(request, response);
-
     }
 
     /*Validator Methods*/
@@ -185,26 +185,14 @@ public class ControllerHelperBase {
                 if (request.getParameter(annotation.buttonName())
                         != null) {
                     invokeButtonMethod(method);
-                    break;
+                    return;
                 }
             }
         }
 
-//        Class superClass = clazz.getSuperclass();
-//        if (superClass != null) {
-//            executeButtonMethod(superClass,
-//                    methodDefault == null);
-//        }
-
         if (methodDefault != null) {
             invokeButtonMethod(methodDefault);
-        } else {
-//            logger.error(
-//                    "(executeButtonMethod) No default method "
-//                    + "was specified, but one was needed.");
-
         }
-
     }
 
     protected void invokeButtonMethod(Method buttonMethod)

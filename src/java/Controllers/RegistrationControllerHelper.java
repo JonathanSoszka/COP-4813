@@ -5,26 +5,26 @@
  */
 package Controllers;
 
+import DTO.RegistrationForm;
 import Entities.User;
 import Helpers.HibernateHelper;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import shared.ButtonMethod;
 
-/**
- *
- * @author Jonathan
- */
 public class RegistrationControllerHelper
         extends ControllerHelperBase {
 
+    RegistrationForm data;
+
+    public RegistrationForm getData() {
+        return data;
+    }
+
     @Override
     public void doGet() throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+        forwardToJsp("register.jsp");
     }
 
     @Override
@@ -33,20 +33,23 @@ public class RegistrationControllerHelper
     }
 
     @ButtonMethod(buttonName = "register", isDefault = true)
-    public void registerMethod() throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    public void registerMethod() throws IOException, ServletException {
+        request.setAttribute("helper", this);
+        data = RegistrationForm.buildFromRequest(request);
+        if (!isValid(data)) {
+            forwardToJsp("register.jsp");
+            return;
+        }
+
         User newUser = new User();
-        newUser.setUsername(username);
+        newUser.setUsername(data.getUsername());
 
         try {
-            newUser.updatePassword(password);
+            newUser.updatePassword(data.getPassword());
         } catch (NoSuchAlgorithmException ex) {
             //swallow
         }
-
         HibernateHelper.updateDB(newUser);
         redirectToController("login");
     }
-
 }

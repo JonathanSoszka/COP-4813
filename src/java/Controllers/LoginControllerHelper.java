@@ -1,5 +1,6 @@
 package Controllers;
 
+import DTO.LoginForm;
 import Entities.User;
 import Helpers.AuthHelper;
 import Helpers.HibernateHelper;
@@ -10,6 +11,12 @@ import javax.servlet.http.Cookie;
 import shared.ButtonMethod;
 
 public class LoginControllerHelper extends ControllerHelperBase {
+
+    private LoginForm data;
+
+    public LoginForm getData() {
+        return data;
+    }
 
     @Override
     public void doGet() throws ServletException, IOException {
@@ -24,16 +31,22 @@ public class LoginControllerHelper extends ControllerHelperBase {
 
     @ButtonMethod(buttonName = "login", isDefault = true)
     public void loginMethod() throws IOException, ServletException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        request.setAttribute("helper", this);
+        data = LoginForm.buildFromRequest(request);
+        
+        if(!isValid(data)){
+            forwardToJsp("login.jsp");
+        }
+        
+        String g = data.getPassword();
 
         boolean success = false;
 
         User user = new User();
-        Object userFromDb = HibernateHelper.getFirstMatch(user, "username", username);
+        Object userFromDb = HibernateHelper.getFirstMatch(user, "username", data.getUsername());
         if (userFromDb != null) {
             user = (User) userFromDb;
-            String passwordHash = AuthHelper.getSecurePassword(password, user.getPasswordSalt());
+            String passwordHash = AuthHelper.getSecurePassword(data.getPassword(), user.getPasswordSalt());
             if (user.getPasswordHash().equals(passwordHash)) {
                 success = true;
                 response.addCookie(objectToCookie(user, "user", "/"));

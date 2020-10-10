@@ -14,6 +14,7 @@
     </head>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/components/navbar.jsp"/>
         <h1>Hello World! Dashboard</h1>
         <p>${user.username}</p>
     </body>
