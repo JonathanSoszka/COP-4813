@@ -17,3 +17,5 @@ nb-configuration.xml
 
 
 .idea/
+out/
+DndBuddy.iml
