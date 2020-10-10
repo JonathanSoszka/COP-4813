@@ -12,7 +12,7 @@ Jonathan --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
       <h1>Registration Page</h1>
       <div class="row">
         <div class="col">
-          <form action="LoginController" method="POST" class="form">
+          <form action="" method="POST" class="form">
             <div class="form-group">
               <label for="">Username</label>
               <input type="text" name="username" class="form-control" />
@@ -23,8 +23,8 @@ Jonathan --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
             </div>
             <button
               type="submit"
-              name="buttonName"
-              value="register"
+              name="register"
+              value="1"
               class="btn btn-primary"
             >
               Register

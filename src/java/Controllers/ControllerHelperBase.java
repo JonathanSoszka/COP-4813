@@ -2,6 +2,7 @@ package Controllers;
 
 import Entities.User;
 import com.cedarsoftware.util.io.JsonReader;
+import com.cedarsoftware.util.io.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +19,7 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.validator.engine.PathImpl;
 import shared.ButtonMethod;
+import static shared.HelperBaseCh4.writeError;
 
 public class ControllerHelperBase {
 
@@ -28,6 +30,7 @@ public class ControllerHelperBase {
     protected static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
     protected static final Validator validator = validatorFactory.getValidator();
     java.util.Map<String, String> errorMap = new java.util.HashMap<String, String>();
+    private Method methodDefault;
 
     public void InitHelperBase(HttpServlet servlet,
             HttpServletRequest request,
@@ -37,6 +40,7 @@ public class ControllerHelperBase {
         this.response = response;
     }
 
+    /*HTTP Methods*/
     public void doGet()
             throws ServletException, IOException {
         response.getWriter().print("The doGet method must be overridden"
@@ -49,6 +53,34 @@ public class ControllerHelperBase {
                 + " in the class that extends HelperBase.");
     }
 
+    /*Request Helper Methods*/
+    protected String jspLocation(String page) {
+        return "/WEB-INF/" + page;
+    }
+
+    protected String controllerLocation(String controller) {
+        return "/DndBuddy/" + controller;
+    }
+
+    protected void redirectToController(String controller) throws IOException {
+        response.sendRedirect(controllerLocation(controller));
+
+    }
+
+    protected void redirectToJsp(String jsp) throws IOException {
+        response.sendRedirect(jspLocation(jsp));
+    }
+
+    protected void forwardToController(String controller) throws ServletException, IOException {
+        request.getRequestDispatcher(controllerLocation(controller)).forward(request, response);
+    }
+
+    protected void forwardToJsp(String jsp) throws ServletException, IOException {
+        request.getRequestDispatcher(jspLocation(jsp)).forward(request, response);
+
+    }
+
+    /*Validator Methods*/
     public void setErrors(Object data) {
 
         Set<ConstraintViolation<Object>> violations = validator.validate(data);
@@ -83,6 +115,7 @@ public class ControllerHelperBase {
         return msg == null || msg.equals("");
     }
 
+    /*Cookie Methods*/
     protected Cookie getCookie(String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -109,7 +142,85 @@ public class ControllerHelperBase {
         if (cookieString == null) {
             return null;
         }
-
         return JsonReader.jsonToJava(cookieString);
+    }
+
+    protected Cookie objectToCookie(Object obj, String name, String path) throws IOException {
+        String jsonStr = JsonWriter.objectToJson(obj);
+        Cookie cookie = new Cookie(name, jsonStr);
+        cookie.setPath(path);
+        return cookie;
+
+    }
+
+    /*ButtonMethod*/
+    protected void executeButtonMethod()
+            throws ServletException, IOException {
+        methodDefault = null;
+        Class clazz = this.getClass();
+        Class enclosingClass = clazz.getEnclosingClass();
+        while (enclosingClass != null) {
+            clazz = this.getClass();
+            enclosingClass = clazz.getEnclosingClass();
+        }
+        try {
+            executeButtonMethod(clazz, true);
+        } catch (Exception ex) {
+            writeError(request, response,
+                    "Button Method Error", ex);
+        }
+    }
+
+    protected void executeButtonMethod(Class clazz,
+            boolean searchForDefault)
+            throws IllegalAccessException, InvocationTargetException {
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            ButtonMethod annotation
+                    = method.getAnnotation(ButtonMethod.class);
+            if (annotation != null) {
+                if (searchForDefault && annotation.isDefault()) {
+                    methodDefault = method;
+                }
+                if (request.getParameter(annotation.buttonName())
+                        != null) {
+                    invokeButtonMethod(method);
+                    break;
+                }
+            }
+        }
+
+//        Class superClass = clazz.getSuperclass();
+//        if (superClass != null) {
+//            executeButtonMethod(superClass,
+//                    methodDefault == null);
+//        }
+
+        if (methodDefault != null) {
+            invokeButtonMethod(methodDefault);
+        } else {
+//            logger.error(
+//                    "(executeButtonMethod) No default method "
+//                    + "was specified, but one was needed.");
+
+        }
+
+    }
+
+    protected void invokeButtonMethod(Method buttonMethod)
+            throws IllegalAccessException, InvocationTargetException {
+
+        try {
+            buttonMethod.invoke(this,
+                    (Object[]) null);
+        } catch (IllegalAccessException iae) {
+            logger.error("(invoke) Button method is not public.",
+                    iae);
+            throw iae;
+        } catch (InvocationTargetException ite) {
+            logger.error("(invoke) Button method exception",
+                    ite);
+            throw ite;
+        }
     }
 }

@@ -25,13 +25,16 @@ Jonathan --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
           <label for="">Password</label>
           <input type="password" name="password" class="form-control" />
         </div>
+        <div>
+          <p class="text-danger">${loginError}</p>
+        </div>
         <button
           type="submit"
-          name="buttonName"
-          value="login"
+          name="login"
+          value="1"
           class="btn btn-primary"
         >
-          Register
+          Login
         </button>
       </form>
     </div>

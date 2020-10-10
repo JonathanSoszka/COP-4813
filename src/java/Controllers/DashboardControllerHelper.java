@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -14,12 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Jonathan
- */
-public class DashboardControllerHelper extends ControllerHelperBase {
 
+public class DashboardControllerHelper extends ControllerHelperBase {
 
     @Override
     public void doGet() throws ServletException, IOException {
@@ -27,9 +23,9 @@ public class DashboardControllerHelper extends ControllerHelperBase {
         User user = (User) getCookieAsObject("user");
         if (user != null) {
             request.setAttribute("user", user);
-            request.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+            forwardToJsp("dashboard.jsp");
         } else {
-            response.sendRedirect("/DndBuddy/login");
+            redirectToController("login");
         }
 
     }
