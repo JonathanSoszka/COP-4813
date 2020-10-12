@@ -14,3 +14,8 @@ nb-configuration.xml
 *.jar
 *.war
 *.ear
+
+
+.idea/
+out/
+DndBuddy.iml
