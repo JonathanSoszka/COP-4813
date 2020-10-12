@@ -14,6 +14,7 @@ public class DashboardControllerHelper extends ControllerHelperBase {
 
     @HttpGet(isDefault = true)
     public void getDashboardView() throws ServletException, IOException {
+        this.request.setAttribute("user", getFromSession("user"));
         forwardToJsp("dashboard.jsp");
     }
 }

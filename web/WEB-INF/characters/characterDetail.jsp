@@ -10,7 +10,7 @@
         <jsp:include page="/WEB-INF/components/navbar.jsp"/>
         <h1>Character Detail Page</h1>
         <p>${character.name}</p>
-        <p>${character.race} | ${character.characterClass}</p>
+        <p>Level ${character.level} | ${character.race} | ${character.characterClass}</p>
         <a href="/DndBuddy/characters">Back</a>
     </body>
 </html>

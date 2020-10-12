@@ -17,19 +17,15 @@ public class CharactersControllerHelper extends ControllerHelperBase {
 
     @HttpGet(url = "characters", isDefault = true)
     public void getCharacterListView() throws ServletException, IOException {
-        User user = new User();
-        user = (User) request.getSession().getAttribute("user");
-        user = (User) HibernateHelper.getFirstMatch(new User(), "username", user.getUsername());
-        request.getSession().setAttribute("user", user);
+        User user = (User) getFromSession("user");
         request.setAttribute("characters", user.getCharacters());
-
         forwardToJsp("characters/characterList.jsp");
     }
 
     @HttpGet(url = "characters/detail")
     public void getCharacterDetailView() throws ServletException, IOException {
         long characterId = Integer.valueOf(request.getParameter("id"));
-        
+
         if (characterId == 0) {
             redirectToController("characters");
             return;
@@ -61,6 +57,7 @@ public class CharactersControllerHelper extends ControllerHelperBase {
         UserCharacter character = new UserCharacter();
         character = (UserCharacter) HibernateHelper.getFirstMatch(character, "id", characterId);
         HibernateHelper.removeDB(character);
+        updateUserSession();
         redirectToController("characters");
     }
 
@@ -69,13 +66,14 @@ public class CharactersControllerHelper extends ControllerHelperBase {
         UserCharacter character = new UserCharacter();
         fillObjectFromRequest(character);
         character.rollRandomStats();
-        
-        User user = new User();
-        user = (User) request.getSession().getAttribute("user");
+        character.setLevel(1);
+
+        User user = (User)getFromSession("user");
         character.setUser(user);
-        
         HibernateHelper.updateDB(character);
         
+        updateUserSession();
+
         redirectToController("characters");
     }
 

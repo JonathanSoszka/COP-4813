@@ -1,6 +1,7 @@
 package Controllers;
 
 import DTO.LoginForm;
+import DTO.UserDTO;
 import Entities.User;
 import Helpers.AuthHelper;
 import Helpers.HibernateHelper;
@@ -16,7 +17,11 @@ public class LoginControllerHelper extends ControllerHelperBase {
 
     @HttpGet(isDefault = true)
     public void getLoginView() throws ServletException, IOException {
-        forwardToJsp("login.jsp");
+        if (getFromSession("user") != null) {
+            redirectToController("dashboard");
+        } else {
+            forwardToJsp("login.jsp");
+        }
     }
 
     @HttpPost(method = "login")
@@ -37,9 +42,7 @@ public class LoginControllerHelper extends ControllerHelperBase {
             if (user.getPasswordHash().equals(passwordHash)) {
                 success = true;
                 addToSession("user", user);
-                user.setCharacters(null);
-                setCookie("user", user);
-
+                setCookie("user", UserDTO.mapFromEntity(user));
             }
         }
         if (success) {
