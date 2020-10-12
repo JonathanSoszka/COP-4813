@@ -51,9 +51,9 @@ If extended from `ControllerHelperBase` we also don't need `doPost()` and `doGet
 
 #### Annotation Examples
 
-* `@HttpGet(url="characters")` a method with this annotation will automatically run when a get request is sent to `DndBuddy/characters`
+* `@HttpGet(url="characters")` a method with this annotation will automatically run when a GET request is sent to `DndBuddy/characters`
 
-* `@HttpPost(method="deleteCharacter")` a method with this annotation will run if a post request is sent with the attribut `method="deleteCharacter"` set this attribute of the button submiting the post request like below
+* `@HttpPost(method="deleteCharacter")` a method with this annotation will run when a POST request is sent with the attribute `method="deleteCharacter"` set this attribute of the button submiting the post request like below
 
 ```
 <form>
