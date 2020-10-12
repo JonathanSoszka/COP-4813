@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegistrationController extends ControllerBase {
+
     public RegistrationController() {
-        super(new RegistrationControllerHelper());
+        super(new RegistrationControllerHelper(), false);
     }
 }

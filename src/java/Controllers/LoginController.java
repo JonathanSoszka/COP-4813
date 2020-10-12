@@ -9,6 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginController extends ControllerBase {
     public LoginController() {
-        super(new LoginControllerHelper());
+        super(new LoginControllerHelper(), false);
     }
 }

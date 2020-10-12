@@ -18,14 +18,6 @@ public class RegistrationForm {
 
     }
 
-    public static RegistrationForm buildFromRequest(HttpServletRequest request) {
-        RegistrationForm registrationForm = new RegistrationForm();
-        registrationForm.Username = request.getParameter("username");
-        registrationForm.Password = request.getParameter("password");
-        registrationForm.ConfirmPassword = request.getParameter("confirmPassword");
-        return registrationForm;
-    }
-
     @NotEmpty(message = "Username is required")
     public String getUsername() {
         return Username;

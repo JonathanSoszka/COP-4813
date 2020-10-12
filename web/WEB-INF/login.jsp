@@ -18,18 +18,18 @@ Jonathan --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
               <form action="" method="POST" class="form">
                 <div class="form-group">
                   <label for="">Username</label>
-                  <input type="text" name="username" value="${helper.data.username}" class="form-control" />
+                  <input type="text" name="username" value="${data.username}" class="form-control" />
                   <p class="text-danger">${helper.errors.username}</p>
                 </div>
                 <div class="form-group">
                   <label for="">Password</label>
-                  <input type="password" name="password" value="${helper.data.password}" class="form-control" />
+                  <input type="password" name="password" value="${data.password}" class="form-control" />
                   <p class="text-danger">${helper.errors.password}</p>
                 </div>
                 <button
                   type="submit"
-                  name="login"
-                  value="1"
+                  name="method"
+                  value="login"
                   class="btn btn-primary w-100"
                 >
                   Login

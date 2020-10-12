@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <!--Initilization Servlets--> 
+    <!--Initilization Servlets-->
     <servlet>
         <servlet-name>InitHibernate</servlet-name>
         <servlet-class>Helpers.InitHibernate</servlet-class>
@@ -10,7 +10,6 @@
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
-    
     <!--Controllers-->
     <servlet>
         <servlet-name>DashboardController</servlet-name>
@@ -24,9 +23,12 @@
         <servlet-name>RegistrationController</servlet-name>
         <servlet-class>Controllers.RegistrationController</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>CharactersController</servlet-name>
+        <servlet-class>Controllers.CharactersController</servlet-class>
+    </servlet>
     <!--Mappings-->
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>DashboardController</servlet-name>
         <url-pattern/>
         <url-pattern>/dashboard</url-pattern>
@@ -39,7 +41,12 @@
         <servlet-name>RegistrationController</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>CharactersController</servlet-name>
+        <url-pattern>/characters</url-pattern>
+        <url-pattern>/characters/detail</url-pattern>
+        <url-pattern>/characters/create</url-pattern>
+    </servlet-mapping>
     <!--Session Configuration-->
     <session-config>
         <session-timeout>

@@ -15,11 +15,11 @@ import org.hibernate.criterion.Restrictions;
 
 public class HibernateHelper {
 
-    static protected Logger log =
-            Logger.getLogger("bytesizebook.webdev.hibernate");
+    static protected Logger log
+            = Logger.getLogger("bytesizebook.webdev.hibernate");
     static protected List<Class> listClasses = new ArrayList<Class>();
     static protected SessionFactory sessionFactory;
-    
+
     static public void initSessionFactory(Properties props,
             Class... mappings) {
         if (addMappings(listClasses, mappings)) {
@@ -64,8 +64,8 @@ public class HibernateHelper {
             Properties props,
             List<Class> list) {
         SessionFactory factory = null;
-        Configuration cfg =
-                new Configuration();
+        Configuration cfg
+                = new Configuration();
         try {
             if (props != null) {
                 cfg.addProperties(props);
@@ -144,7 +144,7 @@ public class HibernateHelper {
 
     static public void updateDB(java.util.List list) {
 
-        Session session = null;        
+        Session session = null;
         try {
             session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
@@ -159,7 +159,7 @@ public class HibernateHelper {
                 session.close();
             }
         }
-    }  
+    }
 
     static public void saveDB(Object obj) {
         Session session = null;
@@ -191,7 +191,7 @@ public class HibernateHelper {
                 session.close();
             }
         }
-    }  
+    }
 
     static public java.util.List getListData(
             Class classBean, String strKey, Object value) {
@@ -202,8 +202,8 @@ public class HibernateHelper {
             session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
 
-            Criteria criteria =
-                    session.createCriteria(classBean);
+            Criteria criteria
+                    = session.createCriteria(classBean);
             if (strKey != null) {
                 criteria.add(Restrictions.like(strKey, value));
             }
@@ -231,8 +231,8 @@ public class HibernateHelper {
             session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
 
-            Criteria criteria =
-                    session.createCriteria(classBean);
+            Criteria criteria
+                    = session.createCriteria(classBean);
             if (strKey1 != null) {
                 criteria.add(Restrictions.like(strKey1, value1));
             }
@@ -266,13 +266,18 @@ public class HibernateHelper {
             session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
 
-            Criteria criteria =
-                    session.createCriteria(classBean);
+            Criteria criteria
+                    = session.createCriteria(classBean);
             if (strKey != null) {
                 criteria.add(Restrictions.like(strKey, value));
             }
-            criteria.setMaxResults(1);
-            result = criteria.uniqueResult();
+
+            List results;
+            results = criteria.list();
+            if (!results.isEmpty())
+            {
+                result = results.toArray()[0];
+            }
 
             tx.commit();
 
