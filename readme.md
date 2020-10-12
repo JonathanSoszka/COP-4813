@@ -56,7 +56,7 @@ If extended from `ControllerHelperBase` we also don't need `doPost()` and `doGet
 * `@HttpPost(method="deleteCharacter")` a method with this annotation will run when a POST request is sent with the attribute `method="deleteCharacter"` set this attribute of the button submiting the post request like below
 
 ```
-<form>
+<form method="POST" action="">
 ...
 <button type="submit" name="method" value="deleteCharacter">Text</button>
 </form>
