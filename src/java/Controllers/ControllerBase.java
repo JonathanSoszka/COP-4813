@@ -38,7 +38,6 @@ public class ControllerBase<T extends ControllerHelperBase> extends HttpServlet 
         if (isAllowed()) {
             _helper.doGet();
         }
-
     }
 
     public void doPost(HttpServletRequest request,
@@ -47,7 +46,6 @@ public class ControllerBase<T extends ControllerHelperBase> extends HttpServlet 
         if (isAllowed()) {
             _helper.doPost();
         }
-
     }
 
     private boolean isAllowed() throws IOException {

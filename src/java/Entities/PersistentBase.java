@@ -13,7 +13,7 @@ public class PersistentBase {
     @GeneratedValue
     public Long getId() { return id; }
 
-    private void setId(Long id) { this.id = id; }
+    public void setId(Long id) { this.id = id; }
     
     
     public PersistentBase() {

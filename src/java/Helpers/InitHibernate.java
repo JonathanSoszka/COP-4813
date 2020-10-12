@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import Entities.UserCharacter;
 
 public class InitHibernate extends HttpServlet {
-
+    
     public void init() {
         Class tables[] = {
             User.class,
@@ -26,12 +26,12 @@ public class InitHibernate extends HttpServlet {
             applySeedData();
         }
     }
-
+    
     private void applySeedData() {
         seedUserData();
         seedCharacterData();
     }
-
+    
     private void seedUserData() {
         try {
             User user = new User();
@@ -42,13 +42,13 @@ public class InitHibernate extends HttpServlet {
             //swallow
         }
     }
-
+    
     private void seedCharacterData() {
         String classes[] = {"Fighter", "rouge", "Mage"};
         String races[] = {"Human", "Dwarf", "Half-Orc"};
         String alignments[] = {"Chaotic Good", "Chaotic Evil", "Lawful Good"};
         User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
-
+        
         for (int i = 0; i < 3; i++) {
             UserCharacter character = new UserCharacter();
             character.setName("Character " + Integer.toString(i));
@@ -57,6 +57,7 @@ public class InitHibernate extends HttpServlet {
             character.setRace(races[i]);
             character.rollRandomStats();
             character.setUser(userFromDb);
+            character.setLevel(i + 1);
             HibernateHelper.updateDB(character);
         }
     }

@@ -1,6 +1,8 @@
 package Controllers;
 
+import DTO.UserDTO;
 import Entities.User;
+import Helpers.HibernateHelper;
 import Helpers.HttpGet;
 import Helpers.HttpPost;
 import com.cedarsoftware.util.io.JsonReader;
@@ -95,15 +97,27 @@ public class ControllerHelperBase {
     //Used to verify that a user is logged in.
     protected boolean verifyAuth() throws IOException {
         //if user cookie is present save it to session, otherwise give the stinky boot
-        User user = (User) getCookieAsObject("user");
-        if (user == null) {
+        UserDTO userDTO = null;
+        if (getCookieAsObject("user") != null) {
+            userDTO = (UserDTO) getCookieAsObject("user");
+        }
+        if (userDTO == null) {
+            redirectToController("login");
+            return false;
+        } else if (!userDTO.isValidSecurityKey()) {
             redirectToController("login");
             return false;
         } else {
-            user = (User) getFromSession("user"); //touch user in session to refresh it.
+            User user = UserDTO.mapToEntity(userDTO);
+            User userFromSession = (User) getFromSession("user");
+            if (userFromSession == null) {
+                user = (User) HibernateHelper.getFirstMatch(user, "id", user.getId());
+                addToSession("user", user);
+            }
             return true;
         }
     }
+
 
     /*Session Storage Methods*/
     protected void addToSession(String name, Object obj) {
@@ -118,40 +132,23 @@ public class ControllerHelperBase {
         request.getSession().removeAttribute(name);
     }
 
-    //Methods to work with @HttpPost and @HttpGet annotations
-    protected void httpPost() throws IOException, ServletException {
-        Method defaultMethod = null;
-        Class clazz = this.getClass();
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            HttpPost annotation = method.getAnnotation(HttpPost.class);
-            if (annotation != null) {
-                if (annotation.isDefault()) {
-                    defaultMethod = method;
-                }
-                if (annotation.method().equals(request.getParameter("method"))) {
-                    invokeMethod(method);
-                    return;
-                }
-            }
-        }
-        if (defaultMethod != null) {
-            invokeMethod(defaultMethod);
-        } else {
-            response.getWriter().print("HTTP Post could not be resolved, "
-                    + "make sure you have a method mapped with "
-                    + "an @HttpPost annotation for this route "
-                    + request.getRequestURI());
-        }
+    protected void updateUserSession() {
+        User user = (User) getFromSession("user");
+        user = (User) HibernateHelper.getFirstMatch(user, "username", user.getUsername());
+        addToSession("user", user);
     }
 
+    //Methods to work with @HttpPost and @HttpGet annotations
     protected void httpGet() throws IOException, ServletException {
         Method defaultMethod = null;
         Class clazz = this.getClass();
         Method[] methods = clazz.getDeclaredMethods();
+
         for (Method method : methods) {
-            HttpGet annotation = method.getAnnotation(HttpGet.class);
-            if (annotation != null) {
+            HttpGet annotation = method.getAnnotation(HttpGet.class
+            );
+            if (annotation
+                    != null) {
                 if (annotation.isDefault()) {
                     defaultMethod = method;
                 }
@@ -171,14 +168,46 @@ public class ControllerHelperBase {
         }
     }
 
+    protected void httpPost() throws IOException, ServletException {
+        Method defaultMethod = null;
+        Class clazz = this.getClass();
+        Method[] methods = clazz.getDeclaredMethods();
+
+        for (Method method : methods) {
+            HttpPost annotation = method.getAnnotation(HttpPost.class
+            );
+            if (annotation
+                    != null) {
+                if (annotation.isDefault()) {
+                    defaultMethod = method;
+                }
+                if (annotation.method().equals(request.getParameter("method"))) {
+                    invokeMethod(method);
+                    return;
+                }
+            }
+        }
+        if (defaultMethod != null) {
+            invokeMethod(defaultMethod);
+        } else {
+            response.getWriter().print("HTTP Post could not be resolved, "
+                    + "make sure you have a method mapped with "
+                    + "an @HttpPost annotation for this route "
+                    + request.getRequestURI());
+        }
+    }
+
     private void invokeMethod(Method method) throws IOException {
         try {
             method.invoke(this, (Object[]) null);
         } catch (InvocationTargetException ex) {
             response.getWriter().write(ex.getTargetException().getMessage());
+
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(ControllerHelperBase.class.getName()).log(Level.SEVERE, null, ex);
-            response.getWriter().print(ex.getMessage());
+            java.util.logging.Logger.getLogger(ControllerHelperBase.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            response.getWriter()
+                    .print(ex.getMessage());
         }
     }
 
@@ -256,8 +285,10 @@ public class ControllerHelperBase {
         }
         try {
             return JsonReader.jsonToJava(cookieString);
+
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(ControllerHelperBase.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ControllerHelperBase.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -308,10 +339,13 @@ public class ControllerHelperBase {
             boolean searchForDefault)
             throws IllegalAccessException, InvocationTargetException {
         Method[] methods = clazz.getDeclaredMethods();
+
         for (Method method : methods) {
             ButtonMethod annotation
-                    = method.getAnnotation(ButtonMethod.class);
-            if (annotation != null) {
+                    = method.getAnnotation(ButtonMethod.class
+                    );
+            if (annotation
+                    != null) {
                 if (searchForDefault && annotation.isDefault()) {
                     methodDefault = method;
                 }

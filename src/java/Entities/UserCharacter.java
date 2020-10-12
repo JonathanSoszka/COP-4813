@@ -28,6 +28,7 @@ public class UserCharacter extends PersistentBase implements Serializable {
     private int Charisma;
     private int MaxHp;
     private int Hp;
+    private int Level;
 
     private User user;
 
@@ -173,6 +174,14 @@ public class UserCharacter extends PersistentBase implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getLevel() {
+        return Level;
+    }
+
+    public void setLevel(int Level) {
+        this.Level = Level;
     }
 
 }

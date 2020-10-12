@@ -1,6 +1,7 @@
 package Controllers;
 
 import DTO.RegistrationForm;
+import DTO.UserDTO;
 import Entities.User;
 import Helpers.HibernateHelper;
 import Helpers.HttpGet;
@@ -37,6 +38,8 @@ public class RegistrationControllerHelper
             //swallow
         }
         HibernateHelper.updateDB(newUser);
+        setCookie("user", UserDTO.mapFromEntity(newUser));
+        addToSession("user", newUser);
         redirectToController("login");
     }
 }

@@ -17,7 +17,7 @@
                     <div class="pl-2 shadow-lg">
                         <span class="font-weight-bold" style="font-size: 28px;">${character.name}</span>
                         <br>
-                        <span>Level 5 | ${character.race} | ${character.characterClass}</span>
+                        <span>Level ${character.level} | ${character.race} | ${character.characterClass}</span>
                     </div>
 
                     <div class="character-card-controls">
