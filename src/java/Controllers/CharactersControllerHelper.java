@@ -110,6 +110,13 @@ public class CharactersControllerHelper extends ControllerHelperBase {
         UserCharacter character = new UserCharacter();
         fillObjectFromRequest(character);
         character.setUser(getUserFromSession());
+
+        UserCharacter characterFromDB = (UserCharacter) HibernateHelper.getFirstMatch(character, "id", character.getId());
+        
+        if (!characterFromDB.getUser().getId().equals(getUserFromSession().getId())) {
+            redirectToController("characters/detail?id=" + String.valueOf(character.getId()));
+        }
+
         HibernateHelper.updateDB(character);
         request.setAttribute("character", character);
         updateUserSession();
