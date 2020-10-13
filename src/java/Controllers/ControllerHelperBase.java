@@ -75,11 +75,6 @@ public class ControllerHelperBase {
         response.sendRedirect(controllerLocation(controller));
     }
 
-    //forwards the current request to another controller
-    protected void forwardToController(String controller) throws ServletException, IOException {
-        request.getRequestDispatcher(controllerLocation(controller)).forward(request, response);
-    }
-
     //forwards the current request to a JSP
     protected void forwardToJsp(String jsp) throws ServletException, IOException {
         request.getRequestDispatcher(jspLocation(jsp)).forward(request, response);
@@ -133,6 +128,10 @@ public class ControllerHelperBase {
         request.getSession().removeAttribute(name);
     }
 
+    protected User getUserFromSession() {
+        return (User) getFromSession("user");
+    }
+
     //Updates the user session by pulling the user from the DB
     protected void updateUserSession() {
         User user = (User) getFromSession("user");
@@ -141,7 +140,6 @@ public class ControllerHelperBase {
     }
 
     //Methods to work with @HttpPost and @HttpGet annotations
-    
     //Searches @HttpGet annotations for one that matches the current url
     protected void httpGet() throws IOException, ServletException {
         Method defaultMethod = null;

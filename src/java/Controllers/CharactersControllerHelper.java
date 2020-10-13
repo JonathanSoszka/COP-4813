@@ -25,7 +25,6 @@ public class CharactersControllerHelper extends ControllerHelperBase {
     @HttpGet(url = "characters/detail")
     public void getCharacterDetailView() throws ServletException, IOException {
         long characterId = Integer.valueOf(request.getParameter("id"));
-
         if (characterId == 0) {
             redirectToController("characters");
             return;
@@ -40,6 +39,35 @@ public class CharactersControllerHelper extends ControllerHelperBase {
 
         request.setAttribute("character", character);
         forwardToJsp("characters/characterDetail.jsp");
+    }
+
+    @HttpGet(url = "characters/edit")
+    public void getCharacterEditView() throws IOException, ServletException {
+        long characterId = Integer.valueOf(request.getParameter("id"));
+        if (characterId == 0) {
+            redirectToController("characters");
+            return;
+        }
+
+        UserCharacter character = new UserCharacter();
+        character = (UserCharacter) HibernateHelper.getFirstMatch(character, "id", characterId);
+        if (character == null) {
+            redirectToController("characters");
+            return;
+        }
+        User user = (User) getFromSession("user");
+
+        if (!character.getUser().getId().equals(user.getId())) {
+            redirectToController("characters");
+            return;
+        }
+
+        request.setAttribute("character", character);
+        request.setAttribute("races", Constants.races);
+        request.setAttribute("classes", Constants.classes);
+        request.setAttribute("alignments", Constants.alignments);
+        request.setAttribute("backgrounds", Constants.backgrounds);
+        forwardToJsp("characters/characterEdit.jsp");
     }
 
     @HttpGet(url = "characters/create")
@@ -68,13 +96,24 @@ public class CharactersControllerHelper extends ControllerHelperBase {
         character.rollRandomStats();
         character.setLevel(1);
 
-        User user = (User)getFromSession("user");
+        User user = (User) getFromSession("user");
         character.setUser(user);
         HibernateHelper.updateDB(character);
-        
+
         updateUserSession();
 
         redirectToController("characters");
+    }
+
+    @HttpPost(method = "saveCharacter")
+    public void saveCharacter() throws IOException, ServletException {
+        UserCharacter character = new UserCharacter();
+        fillObjectFromRequest(character);
+        character.setUser(getUserFromSession());
+        HibernateHelper.updateDB(character);
+        request.setAttribute("character", character);
+        updateUserSession();
+        redirectToController("characters/detail?id=" + String.valueOf(character.getId()));
     }
 
 }
