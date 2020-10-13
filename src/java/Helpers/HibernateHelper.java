@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.criterion.Restrictions;
 
+//Helper class from textbook, used to get/store records to the database
 public class HibernateHelper {
 
     static protected Logger log

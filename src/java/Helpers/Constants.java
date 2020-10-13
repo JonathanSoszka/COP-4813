@@ -5,9 +5,10 @@
  */
 package Helpers;
 
+//store constant bvalues here used throught the app
 public class Constants {
 
-    public static String races[]
+    public final static String races[]
             = {
                 "Dragonborn",
                 "Dwarf",
@@ -19,7 +20,7 @@ public class Constants {
                 "Human",
                 "Tiefling",};
 
-    public static String classes[]
+    public final static String classes[]
             = {"Barbarian",
                 "Bard",
                 "Cleric",
@@ -33,7 +34,7 @@ public class Constants {
                 "Warlock",
                 "Wizard"};
 
-    public static String alignments[]
+    public final static String alignments[]
             = {"Lawful Good",
                 "Neutral Good",
                 "Chaotic Good",
@@ -45,7 +46,7 @@ public class Constants {
                 "Chaotic Evil"
             };
 
-    public static String backgrounds[]
+    public final static String backgrounds[]
             = {"Acolyte", "Con Artist", "Scoundrel"};
 
 }

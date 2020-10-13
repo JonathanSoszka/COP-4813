@@ -21,13 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerBase<T extends ControllerHelperBase> extends HttpServlet {
 
     private T _helper;
+    
+    //If this is set to true the controller will be protected(the user must be logged in)
     private boolean _secure;
 
+    //constructor to set security value
     public ControllerBase(T helper, boolean secure) {
         _helper = helper;
         _secure = secure;
     }
 
+    //constructor to default secure to true
     public ControllerBase(T helper) {
         _helper = helper;
         _secure = true;
@@ -48,6 +52,7 @@ public class ControllerBase<T extends ControllerHelperBase> extends HttpServlet 
         }
     }
 
+    //helper to decide if the user is allowed to access the controller
     private boolean isAllowed() throws IOException {
         if (_secure == false) {
             return true;

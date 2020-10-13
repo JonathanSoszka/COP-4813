@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
  *
  * @author Jonathan
  */
+
+//HttpGet annotations used in controllerBaseHelper
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface HttpGet {

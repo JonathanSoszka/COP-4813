@@ -35,7 +35,7 @@ public class ControllerHelperBase {
     protected Logger logger;
     protected static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
     protected static final Validator validator = validatorFactory.getValidator();
-    java.util.Map<String, String> errorMap = new java.util.HashMap<String, String>();
+    java.util.Map<String, String> errorMap = new java.util.HashMap<>();
     private Method methodDefault;
 
     public void InitHelperBase(HttpServlet servlet,
@@ -85,6 +85,7 @@ public class ControllerHelperBase {
         request.getRequestDispatcher(jspLocation(jsp)).forward(request, response);
     }
 
+    //fills the object with data from the request, relies on the paramater name matching the bean property name.
     protected void fillObjectFromRequest(Object obj) throws IOException {
         try {
             BeanUtils.populate(obj, request.getParameterMap());
@@ -94,7 +95,7 @@ public class ControllerHelperBase {
         }
     }
 
-    //Used to verify that a user is logged in.
+    //Used to verify that a user is logged in called in base controller.
     protected boolean verifyAuth() throws IOException {
         //if user cookie is present save it to session, otherwise give the stinky boot
         UserDTO userDTO = null;
@@ -132,6 +133,7 @@ public class ControllerHelperBase {
         request.getSession().removeAttribute(name);
     }
 
+    //Updates the user session by pulling the user from the DB
     protected void updateUserSession() {
         User user = (User) getFromSession("user");
         user = (User) HibernateHelper.getFirstMatch(user, "username", user.getUsername());
@@ -139,6 +141,8 @@ public class ControllerHelperBase {
     }
 
     //Methods to work with @HttpPost and @HttpGet annotations
+    
+    //Searches @HttpGet annotations for one that matches the current url
     protected void httpGet() throws IOException, ServletException {
         Method defaultMethod = null;
         Class clazz = this.getClass();
@@ -168,6 +172,7 @@ public class ControllerHelperBase {
         }
     }
 
+    //Searches @HttpPost annotations for one that matches the name provided in the method paramater
     protected void httpPost() throws IOException, ServletException {
         Method defaultMethod = null;
         Class clazz = this.getClass();
@@ -197,6 +202,7 @@ public class ControllerHelperBase {
         }
     }
 
+    //used in httpGet and httpPost to actually invoke the method that was found
     private void invokeMethod(Method method) throws IOException {
         try {
             method.invoke(this, (Object[]) null);
@@ -211,6 +217,7 @@ public class ControllerHelperBase {
         }
     }
 
+    //used by httpGet to remove the dndBuddy prefix from the current url
     String getTrimmedUri() {
         String uri = request.getRequestURI();
         uri = uri.replace("/DndBuddy/", "");

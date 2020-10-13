@@ -10,13 +10,17 @@ import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServlet;
 import Entities.UserCharacter;
 
+//This code gets called at app startup to init hibernate
 public class InitHibernate extends HttpServlet {
-    
+
     public void init() {
+        //list any entities for persistance here
         Class tables[] = {
             User.class,
             UserCharacter.class
         };
+
+        //check web.xml for create param
         boolean create = Boolean.parseBoolean(this.getInitParameter("create"));
         if (create) {
             HibernateHelper.createTable(tables);
@@ -26,12 +30,14 @@ public class InitHibernate extends HttpServlet {
             applySeedData();
         }
     }
-    
+
+    //adds seed data to database
     private void applySeedData() {
         seedUserData();
         seedCharacterData();
     }
-    
+
+    //seed user data
     private void seedUserData() {
         try {
             User user = new User();
@@ -42,19 +48,18 @@ public class InitHibernate extends HttpServlet {
             //swallow
         }
     }
-    
+
+    //seed character data
     private void seedCharacterData() {
-        String classes[] = {"Fighter", "rouge", "Mage"};
-        String races[] = {"Human", "Dwarf", "Half-Orc"};
-        String alignments[] = {"Chaotic Good", "Chaotic Evil", "Lawful Good"};
         User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
-        
-        for (int i = 0; i < 3; i++) {
+
+        for (int i = 0; i < 5; i++) {
             UserCharacter character = new UserCharacter();
-            character.setName("Character " + Integer.toString(i));
-            character.setAlignment(alignments[i]);
-            character.setCharacterClass(classes[i]);
-            character.setRace(races[i]);
+            character.setName("Character " + Integer.toString(i + 1));
+            character.setAlignment(Constants.alignments[i % 9]);
+            character.setCharacterClass(Constants.classes[i % 12]);
+            character.setRace(Constants.races[i % 9]);
+            character.setBackground(Constants.backgrounds[i % 3]);
             character.rollRandomStats();
             character.setUser(userFromDb);
             character.setLevel(i + 1);

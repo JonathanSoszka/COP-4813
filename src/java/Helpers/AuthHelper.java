@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+//helper to manage password hashes and salts
 public class AuthHelper {
 
     public static String getSecurePassword(String password, byte[] salt) {
