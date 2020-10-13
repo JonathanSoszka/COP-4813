@@ -9,3 +9,7 @@
 .btn-sharp{
     border-radius: 0;
 }
+
+.content-divider{
+    border-bottom: 1px solid black;
+}

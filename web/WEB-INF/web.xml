@@ -6,7 +6,7 @@
         <servlet-class>Helpers.InitHibernate</servlet-class>
         <init-param>
             <param-name>create</param-name>
-            <param-value>true</param-value>
+            <param-value>false</param-value>
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
@@ -45,6 +45,7 @@
         <servlet-name>CharactersController</servlet-name>
         <url-pattern>/characters</url-pattern>
         <url-pattern>/characters/detail</url-pattern>
+        <url-pattern>/characters/edit</url-pattern>
         <url-pattern>/characters/create</url-pattern>
     </servlet-mapping>
     <!--Session Configuration-->

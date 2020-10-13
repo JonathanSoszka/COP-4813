@@ -45,7 +45,7 @@
 
 <style>
     .character-card{
-        outline: solid 1px;
+        outline: solid 2px;
     }
 
     .btn-new-char{
