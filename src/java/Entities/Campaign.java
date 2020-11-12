@@ -14,11 +14,11 @@ import org.hibernate.annotations.LazyCollectionOption;
  *
  * @author Jonathan
  */
+@Entity
 public class Campaign extends PersistentBase implements Serializable {
 
     private String Name;
     private User CreatedBy;
-
 
     public String getName() {
         return Name;
@@ -38,6 +38,4 @@ public class Campaign extends PersistentBase implements Serializable {
     public void setCreatedBy(User CreatedBy) {
         this.CreatedBy = CreatedBy;
     }
-
-
 }

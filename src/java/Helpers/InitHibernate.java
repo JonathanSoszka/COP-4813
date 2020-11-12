@@ -18,21 +18,22 @@ public class InitHibernate extends HttpServlet {
         Class tables[] = {
             User.class,
             UserCharacter.class,
+            Campaign.class,
             UserNote.class,
-            Campaign.class
+            
         };
 
         //check web.xml for create param
         boolean create = Boolean.parseBoolean(this.getInitParameter("create"));
         if (create) {
             //create db
-            try {
+            /*try {
                 Class.forName("com.mysql.jdbc.Driver");
                 DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", "password")
                         .createStatement().executeUpdate("CREATE DATABASE dndbuddy");
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
             //create tables
             HibernateHelper.createTable(tables);
         }
