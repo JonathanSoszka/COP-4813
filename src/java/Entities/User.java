@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -21,6 +22,7 @@ public class User extends PersistentBase implements Serializable {
     private byte[] PasswordSalt;
 
     private List<UserCharacter> userCharacters;
+    private List<UserNote> userNotes;
 
     public String getUsername() {
         return Username;
@@ -53,9 +55,8 @@ public class User extends PersistentBase implements Serializable {
         PasswordHash = passwordHash;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = UserCharacter.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
-    @LazyCollection(LazyCollectionOption.FALSE)
     public List<UserCharacter> getCharacters() {
         return userCharacters;
     }

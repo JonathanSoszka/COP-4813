@@ -2,6 +2,7 @@ package Controllers;
 
 import DTO.UserDTO;
 import Entities.User;
+import Entities.UserNote;
 import Helpers.HibernateHelper;
 import Helpers.HttpGet;
 import Helpers.HttpPost;
@@ -10,6 +11,10 @@ import com.cedarsoftware.util.io.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
@@ -381,5 +386,52 @@ public class ControllerHelperBase {
                     ite);
             throw ite;
         }
+    }
+    
+    protected UserNote getNote(ResultSet rs) {
+        UserNote note = new UserNote();
+        User user = new User();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            ResultSet userRS = DriverManager.getConnection("jdbc:mysql://localhost/dndbuddy", "root", "password").createStatement().executeQuery("SELECT * FROM user WHERE id="+Long.toString(rs.getLong("USER_ID")));
+            userRS.first();
+            user.setId(userRS.getLong("id"));
+            user.setUsername(userRS.getString("username"));
+            user.setPasswordHash(userRS.getString("passwordHash"));
+            user.setPasswordSalt(userRS.getBytes("passwordSalt"));
+            note.setUser(user);
+            note.setId(rs.getLong("id"));
+            note.setText(rs.getString("text"));
+            note.setVis(rs.getString("vis"));
+            note.setAuthor(rs.getString("author"));
+        } catch(Exception e) {
+            //error filling user or note objects
+        }
+        return note;
+    }
+    
+    //retrieve all user notes; may be repurposed to work with campaigns as in mockup
+    protected List<UserNote> getNotesList(Long uid) {
+        List<UserNote> notes = new ArrayList<UserNote>();
+        ResultSet rs = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            rs = DriverManager.getConnection("jdbc:mysql://localhost/dndbuddy", "root", "password").createStatement().executeQuery("SELECT * FROM usernote WHERE USER_ID = "+Long.toString(uid));
+        } catch(Exception e) {  
+            //error acquiring RsultSet from DB
+        }
+        
+        try {
+            while (rs.next()) {
+                UserNote tempNote = new UserNote();
+                tempNote = getNote(rs);
+                notes.add(tempNote);
+            }
+            rs.close();
+        } catch(Exception e) { 
+            //error adding notes to list
+        }
+        return notes;
     }
 }

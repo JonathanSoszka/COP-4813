@@ -48,5 +48,4 @@ public class Constants {
 
     public final static String backgrounds[]
             = {"Acolyte", "Con Artist", "Scoundrel"};
-
 }
