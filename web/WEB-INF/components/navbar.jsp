@@ -20,8 +20,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Campaigns</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Utilities</a>
+            <li class="nav-item dropdown dropdown-hover">
+                <a class="nav-link dropdown-toggle" href="/DndBuddy/utilities">Utilities</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/DndBuddy/utilities/monster">Monster Generator</a>
+                    <a class="dropdown-item" href="/DndBuddy/utilities/notes">My Notes</a>
+                </div>
             </li>
         </ul>
 
