@@ -13,3 +13,8 @@
 .content-divider{
     border-bottom: 1px solid black;
 }
+
+.dropdown-hover:hover > .dropdown-menu {
+    display: inline-block;
+    margin-top: 0px;
+}
