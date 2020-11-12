@@ -5,12 +5,10 @@
  */
 package Helpers;
 
-import Entities.User;
+import Entities.*;
 import java.security.NoSuchAlgorithmException;
-import javax.servlet.http.HttpServlet;
-import Entities.UserCharacter;
-import Entities.UserNote;
 import java.sql.DriverManager;
+import javax.servlet.http.HttpServlet;
 
 //This code gets called at app startup to init hibernate
 public class InitHibernate extends HttpServlet {
@@ -20,7 +18,8 @@ public class InitHibernate extends HttpServlet {
         Class tables[] = {
             User.class,
             UserCharacter.class,
-            UserNote.class
+            UserNote.class,
+            Campaign.class
         };
 
         //check web.xml for create param

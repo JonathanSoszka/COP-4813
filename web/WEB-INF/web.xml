@@ -6,7 +6,7 @@
         <servlet-class>Helpers.InitHibernate</servlet-class>
         <init-param>
             <param-name>create</param-name>
-            <param-value>false</param-value>
+            <param-value>true</param-value>
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
