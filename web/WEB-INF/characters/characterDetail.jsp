@@ -19,6 +19,8 @@
             </div>
         </div>
         <div class="container detail-container">
+            <div class="">Campaign: ${character.campaign.name}</div>
+
             <div class="mt-5 row content-divider">
                 <div class="col character-title"><h2>Traits</h2></div>
             </div>
@@ -37,6 +39,8 @@
                 </div>
             </div>
             <div class="mt-5 row content-divider">
+                
+                
                 <div class="col character-title"><h2>Stats</h2></div>
             </div>
             <div class="row mt-5">
@@ -68,15 +72,6 @@
                 </div>
                 <div class="col-4">
                     Charisma: ${character.charisma}
-                </div>
-            </div>
-
-            <div class="mt-5 row content-divider">
-                <div class="col character-title"><h2>Capmaigns</h2></div>
-            </div>
-            <div class="mt-5 row">
-                <div class="col-3">
-                    TODO
                 </div>
             </div>
         </div>

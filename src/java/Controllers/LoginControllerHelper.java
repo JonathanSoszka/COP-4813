@@ -18,7 +18,7 @@ public class LoginControllerHelper extends ControllerHelperBase {
     @HttpGet(isDefault = true)
     public void getLoginView() throws ServletException, IOException {
         if (getFromSession("user") != null) {
-            redirectToController("dashboard");
+            redirectToController("");
         } else {
             forwardToJsp("login.jsp");
         }
@@ -46,7 +46,7 @@ public class LoginControllerHelper extends ControllerHelperBase {
             }
         }
         if (success) {
-            redirectToController("dashboard");
+            redirectToController("");
         } else {
             request.setAttribute("loginError", "Invalid Username or Password.");
             forwardToJsp("login.jsp");

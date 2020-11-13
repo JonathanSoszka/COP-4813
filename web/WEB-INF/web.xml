@@ -6,15 +6,11 @@
         <servlet-class>Helpers.InitHibernate</servlet-class>
         <init-param>
             <param-name>create</param-name>
-            <param-value>false</param-value>
+            <param-value>true</param-value>
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <!--Controllers-->
-    <servlet>
-        <servlet-name>DashboardController</servlet-name>
-        <servlet-class>Controllers.DashboardController</servlet-class>
-    </servlet>
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>Controllers.LoginController</servlet-class>
@@ -31,12 +27,11 @@
         <servlet-name>UtilitiesController</servlet-name>
         <servlet-class>Controllers.UtilitiesController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CampaignsController</servlet-name>
+        <servlet-class>Controllers.CampaignsController</servlet-class>
+    </servlet>
     <!--Mappings-->
-    <servlet-mapping>
-        <servlet-name>DashboardController</servlet-name>
-        <url-pattern/>
-        <url-pattern>/dashboard</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -47,10 +42,12 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CharactersController</servlet-name>
+        <url-pattern/>
         <url-pattern>/characters</url-pattern>
         <url-pattern>/characters/detail</url-pattern>
         <url-pattern>/characters/edit</url-pattern>
         <url-pattern>/characters/create</url-pattern>
+
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UtilitiesController</servlet-name>
@@ -58,6 +55,13 @@
         <url-pattern>/utilities/notes</url-pattern>
         <url-pattern>/utilities/notes/edit</url-pattern>
         <url-pattern>/utilities/monster</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CampaignsController</servlet-name>
+        <url-pattern>/campaigns</url-pattern>
+        <url-pattern>/campaigns/create</url-pattern>
+        <url-pattern>/campaigns/detail</url-pattern>
+        <url-pattern>/campaigns/addCharacter</url-pattern>
     </servlet-mapping>
     <!--Session Configuration-->
     <session-config>

@@ -1,6 +1,7 @@
 package Controllers;
 
 import DTO.UserDTO;
+import Entities.Campaign;
 import Entities.User;
 import Entities.UserNote;
 import Helpers.HibernateHelper;

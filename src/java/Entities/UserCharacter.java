@@ -1,6 +1,8 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +31,12 @@ public class UserCharacter extends PersistentBase implements Serializable {
     private int MaxHp;
     private int Hp;
     private int Level;
-
     private User user;
+    private Campaign Campaign;
+
+    public UserCharacter() {
+
+    }
 
     public void rollRandomStats() {
         setStrength(statRoll());
@@ -184,4 +190,14 @@ public class UserCharacter extends PersistentBase implements Serializable {
         this.Level = Level;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CAMPAIGN_ID")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Campaign getCampaign() {
+        return Campaign;
+    }
+
+    public void setCampaign(Campaign Campaign) {
+        this.Campaign = Campaign;
+    }
 }
