@@ -17,25 +17,30 @@ public class InitHibernate extends HttpServlet {
         //list any entities for persistance here
         Class tables[] = {
             User.class,
-            UserCharacter.class,
             Campaign.class,
-            UserNote.class,
-            
-        };
+            UserCharacter.class,
+            UserNote.class,};
 
         //check web.xml for create param
         boolean create = Boolean.parseBoolean(this.getInitParameter("create"));
         if (create) {
             //create db
             /*try {
-                Class.forName("com.mysql.jdbc.Driver");
-                DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", "password")
-                        .createStatement().executeUpdate("CREATE DATABASE dndbuddy");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+             Class.forName("com.mysql.jdbc.Driver");
+             DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", "password")
+             .createStatement().executeUpdate("CREATE DATABASE dndbuddy");
+             } catch (Exception e) {
+             e.printStackTrace();
+             }*/
             //create tables
-            HibernateHelper.createTable(tables);
+            try
+            {
+                HibernateHelper.createTable(tables);
+            }
+            catch (Exception ex)
+            {
+                Exception exx = ex;
+            }
         }
         HibernateHelper.initSessionFactory(tables);;
         if (create) {
@@ -46,6 +51,7 @@ public class InitHibernate extends HttpServlet {
     //adds seed data to database
     private void applySeedData() {
         seedUserData();
+        seedCampaignData();
         seedCharacterData();
         seedNoteData();
     }
@@ -62,9 +68,20 @@ public class InitHibernate extends HttpServlet {
         }
     }
 
+    //seed campaign data
+    private void seedCampaignData() {
+        User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
+   
+        Campaign campaign = new Campaign();
+        campaign.setCreatedBy(userFromDb);
+        campaign.setName("Test Campaign");
+        HibernateHelper.updateDB(campaign);
+    }
+
     //seed character data
     private void seedCharacterData() {
         User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
+        Campaign campaignFromDb = (Campaign) HibernateHelper.getKeyData(Campaign.class, 1);
 
         for (int i = 0; i < 5; i++) {
             UserCharacter character = new UserCharacter();
@@ -76,10 +93,11 @@ public class InitHibernate extends HttpServlet {
             character.rollRandomStats();
             character.setUser(userFromDb);
             character.setLevel(i + 1);
+            character.setCampaign(campaignFromDb);
             HibernateHelper.updateDB(character);
         }
     }
-    
+
     private void seedNoteData() {
         User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
 

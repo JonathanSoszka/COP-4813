@@ -11,8 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.*;
 
 @Entity
 public class User extends PersistentBase implements Serializable {
@@ -22,6 +21,7 @@ public class User extends PersistentBase implements Serializable {
     private byte[] PasswordSalt;
 
     private List<UserCharacter> userCharacters;
+    private List<Campaign> campaigns;
     private List<UserNote> userNotes;
 
     public String getUsername() {
@@ -55,7 +55,8 @@ public class User extends PersistentBase implements Serializable {
         PasswordHash = passwordHash;
     }
 
-    @OneToMany(targetEntity = UserCharacter.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = UserCharacter.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "USER_ID")
     public List<UserCharacter> getCharacters() {
         return userCharacters;
@@ -63,6 +64,27 @@ public class User extends PersistentBase implements Serializable {
 
     public void setCharacters(List<UserCharacter> Characters) {
         this.userCharacters = Characters;
+    }
+
+    @OneToMany(targetEntity = Campaign.class)
+    @JoinColumn(name = "USER_ID")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Campaign> getCampaigns() {
+        return campaigns;
+    }
+
+    public void setCampaigns(List<Campaign> Campaigns) {
+        this.campaigns = Campaigns;
+    }
+    @OneToMany(targetEntity = UserNote.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name = "USER_ID")
+    public List<UserNote> getUserNotes() {
+        return userNotes;
+    }
+
+    public void setUserNotes(List<UserNote> userNotes) {
+        this.userNotes = userNotes;
     }
 
 }

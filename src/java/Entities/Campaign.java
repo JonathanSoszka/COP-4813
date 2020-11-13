@@ -6,6 +6,7 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -19,6 +20,7 @@ public class Campaign extends PersistentBase implements Serializable {
 
     private String Name;
     private User CreatedBy;
+    private List<UserCharacter> Characters;
 
     public String getName() {
         return Name;
@@ -28,14 +30,25 @@ public class Campaign extends PersistentBase implements Serializable {
         this.Name = Name;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CREATEDBY_ID")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToOne()
+    @JoinColumn(name = "USER_ID")
+    //@LazyCollection(LazyCollectionOption.FALSE)
     public User getCreatedBy() {
         return CreatedBy;
     }
 
     public void setCreatedBy(User CreatedBy) {
         this.CreatedBy = CreatedBy;
+    }
+
+    @OneToMany(targetEntity = UserCharacter.class)
+    @JoinColumn(name = "CAMPAIGN_ID")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<UserCharacter> getCharacters() {
+        return Characters;
+    }
+
+    public void setCharacters(List<UserCharacter> Characters) {
+        this.Characters = Characters;
     }
 }
