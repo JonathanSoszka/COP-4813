@@ -10,10 +10,12 @@
 </head>
 <body>
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
-    <h1>Add Character to ${campaign.name}</h1>
+
     <div class="container">
+        <h1 class="mb-5">Add Character to ${campaign.name}</h1>
         <div class="row">
             <div class="col">
+                <P class="text-danger">${error}</p>
                 <form class="form" action="" method="POST">
                     <div class="form-group">
                         <label for="">Username</label>

@@ -9,7 +9,7 @@
 <body>
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
     <div class="container">
-        <a href="/DndBuddy/characters">Back</a>
+        <div class="mb-3 mt-2"><a href="/DndBuddy/characters">Back</a></div>
         <div class="row character-title">
             <div class="col d-flex justify-content-between">
                 <h1>${character.name}</h1>

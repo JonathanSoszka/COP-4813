@@ -14,9 +14,17 @@
                 <h1>Monster Generator</h1>
             </div>
         </div>
-        <button class="my-5" onclick="getRandomMonster()">Generate monster</button>
-        <br>
-        <h3 class="my-5 text-center bg-light lg-shadow" id="monster-name">Click the button!</h3>
+        <div class="row">
+            <div class="col">
+                <h3 class="my-5 text-center" id="monster-name">Click the button!</h3>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col">
+                <button class="btn btn-primary btn-sharp btn-block my-5" onclick="getRandomMonster()">Generate monster</button>
+            </div>
+        </div>
+        </div>   
     </div>
 
 <script>    

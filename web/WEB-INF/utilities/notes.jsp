@@ -6,24 +6,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="/DndBuddy/resources/styles/global.css" />
+        <script src="https://kit.fontawesome.com/815f235d4b.js" crossorigin="anonymous"></script>
     </head>
 </head>
 <body>
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
-    <div class="container mt-5 character-container p-0">
+    <div class="container mt-5 p-0">
+        <div class="row character-title mb-5">
+            <div class="col d-flex justify-content-between">
+                <h1>My Notes</h1>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-end">
+                <a href="notes/edit"><button class="btn btn-sharp btn-primary btn-new-note shadow-lg">Edit notes</button></a> 
+            </div>
+        </div>
         <core:forEach var="note" items="${notes}">
             <div class="row">
-                <div id="${note.id}" class="mb-3 col-6 offset-3 p-0 character-card">
-                    <div class="pl-2 shadow-lg">
-                        <span class="pr-2">${note.text}</span>
-                        <span class="float-right pl-2">CREATOR: ${note.author}</span>
+                <div id="${note.id}" class="mb-3 col-10 offset-1 p-0">
+                    <div class="shadow-sm">
+                        <div class="card">
+                            <div class="card-body">
+                                ${note.text}
+                            </div>
+                        </div>
                     </div>
                 </div>        
             </div>
         </core:forEach>
-        <div class="character-card-controls">
-            <a href="notes/edit"><button class="btn btn-sharp btn-primary btn-new-note shadow-lg">Edit notes</button></a> 
-        </div>
     </div>
 </body>
 </html>
