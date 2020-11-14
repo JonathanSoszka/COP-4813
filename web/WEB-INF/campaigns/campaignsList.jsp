@@ -11,6 +11,11 @@
 <body>
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
     <div class="container mt-5 campaign-container p-0">
+        <div class="row character-title mb-5">
+            <div class="col d-flex justify-content-between">
+                <h1>My Campaigns</h1>
+            </div>
+        </div>
         <core:forEach var="campaign" items="${campaigns}">
             <div class="row">
                 <div class="mb-3 col-6 offset-3 p-0 campaign-card">
@@ -45,12 +50,17 @@
 
 <style>
     .campaign-card{
-        outline: solid 2px;
+        border: solid 2px;
+        border-radius: 7px;
     }
 
     .btn-new-char{
         position: fixed;
         right:    15px;
         bottom:   15px;
+    }
+
+    .character-title{
+        border-bottom: solid 3px black;
     }
 </style>

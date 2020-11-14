@@ -74,7 +74,7 @@ public class InitHibernate extends HttpServlet {
    
         Campaign campaign = new Campaign();
         campaign.setCreatedBy(userFromDb);
-        campaign.setName("Test Campaign");
+        campaign.setName("Sample Campagin");
         HibernateHelper.updateDB(campaign);
     }
 
@@ -101,7 +101,7 @@ public class InitHibernate extends HttpServlet {
     private void seedNoteData() {
         User userFromDb = (User) HibernateHelper.getFirstMatch(new User(), "username", "testuser");
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             UserNote note = new UserNote();
             note.setText("note number " + Integer.toString(i));
             note.setUser(userFromDb);
@@ -109,9 +109,9 @@ public class InitHibernate extends HttpServlet {
             note.setVis("private");
             HibernateHelper.updateDB(note);
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             UserNote note = new UserNote();
-            note.setText("note number " + Integer.toString(i));
+            note.setText("note number " + Integer.toString(i+5));
             note.setUser(userFromDb);
             note.setAuthor(userFromDb.getUsername());
             note.setVis("public");

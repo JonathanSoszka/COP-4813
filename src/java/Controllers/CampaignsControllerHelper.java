@@ -76,7 +76,7 @@ public class CampaignsControllerHelper extends ControllerHelperBase {
             forwardToJsp("campaigns/addCharacter.jsp");
         }
 
-        UserCharacter characterToAdd = new UserCharacter();
+        UserCharacter characterToAdd = null;
         for (UserCharacter character : user.getCharacters()) {
             if (character.getName().equals(characterName)) {
                 characterToAdd = character;

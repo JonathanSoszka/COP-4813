@@ -11,54 +11,65 @@
 <body>
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
     <div class="container mt-5 character-container p-0">
+
+        <div class="container mt-5 p-0">
+            <div class="row character-title mb-5">
+                <div class="col d-flex justify-content-between">
+                    <h1>Editing Notes</h1>
+                </div>
+            </div>
         <form method="POST" action="">
+            <input id="delete-field" name="deleteId" value=0 hidden>
             <core:forEach var="note" items="${notes}">
                 <div class="row">
-                    <div name="note-${note.id}" id="${note.id}" class="mb-3 col-6 offset-3 p-0 pl-2 shadow-lg character-card">
-                        <textarea name="text-${note.id}">${note.text}</textarea>
-                        <div style="float:right;">
-                            <core:if test = "${note.vis == 'public'}">
-                                <input type="radio" name="vis-${note.id}" value="public" label="Public" checked>Public
-                                <input type="radio" name="vis-${note.id}" value="private" label="Private">Private
-                            </core:if>
-                            <core:if test = "${note.vis == 'private'}">
-                                <input type="radio" name="vis-${note.id}" value="public" label="Public">Public
-                                <input type="radio" name="vis-${note.id}" value="private" label="Private" checked>Private
-                            </core:if>
+                    <div name="note-${note.id}" id="${note.id}" class="mb-3 col-8 offset-1 p-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <textarea class="w-100" name="text-${note.id}">${note.text}</textarea>
+                                <div style="float:right;">
+                                    <core:if test = "${note.vis == 'public'}">
+                                        <input type="radio" name="vis-${note.id}" value="public" label="Public" checked>Public
+                                        <input type="radio" name="vis-${note.id}" value="private" label="Private">Private
+                                    </core:if>
+                                    <core:if test = "${note.vis == 'private'}">
+                                        <input type="radio" name="vis-${note.id}" value="public" label="Public">Public
+                                        <input type="radio" name="vis-${note.id}" value="private" label="Private" checked>Private
+                                    </core:if>
+                                </div>
+                                <br>
+                            </div>
                         </div>
-                        <br>
+
                     </div>
-                    <input id="delete-note-${note.id}" hidden>
-                    <button onclick="deleteNote(${note.id})" name="method" value="deleteNote" class="ml-2 mb-3 p-0 btn btn-sharp btn-secondary btn-new-note shadow-lg" >Delete</button>
+                    <div class="col-2">
+                        <button name="method" value="deleteNote" class="btn btn-outline-secondary" onclick="(deleteNote('${note.id}'))">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                </div>
                 </div>
             </core:forEach>
-            
-            
-
-            <div class="container col-6 character-card-controls">
-                <button name="method" value="addNote" class="btn btn-sharp btn-primary btn-new-note shadow-lg">Add note</button>
-                <button name="method" value="saveNotes" class="fixed-bottom float-right btn btn-sharp btn-primary btn-new-note shadow-lg">Save</button>
+            <div class="container col-8 offset-1 p-0 character-card-controls">
+                <button name="method" value="addNote" class="btn btn-sharp btn-primary shadow btn-block">Add note</button>
             </div>
+            <button name="method" value="saveNotes" class="btn btn-sharp btn-primary btn-edit-notes shadow-lg">Save</button>
         </form>
     </div>
+           
 </body>
 </html>
 
 <script>
     function deleteNote(noteId)
     {
-        if (confirm("Do you really want to delete this note?")) {
-            document.getElementById("delete-note-"+noteId).name="deleteId";
-            document.getElementById("delete-note-"+noteId).value=noteId;
-            return;
-        }
+        console.log(noteId);
+        document.getElementById('delete-field').value=noteId;
     }
 </script>
 
 <style>
     .btn-edit-notes{
-        position: fixed;
-        right:    15px;
-        bottom:   15px;
+        position: fixed !important;
+        right:    15px !important;
+        bottom:   15px !important;
     }
 </style>
