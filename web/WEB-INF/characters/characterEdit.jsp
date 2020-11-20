@@ -113,15 +113,6 @@
                 <input type="text" class="stat-input" name="charisma" value="${character.charisma}">
             </div>
         </div>
-
-        <div class="mt-5 row content-divider">
-            <div class="col character-title"><h2>Capmaigns</h2></div>
-        </div>
-        <div class="mt-5 row">
-            <div class="col-3">
-                TODO
-            </div>
-        </div>
     </form>
     </div>
 </div>

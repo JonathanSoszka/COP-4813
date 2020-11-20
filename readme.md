@@ -8,7 +8,31 @@ This application will serve as a companion tool for people playing Dungeons and 
 ## Team Members
 * Jonathan Soszka
 * Wyatt O'Steen
-* Wynne Nicholas
+
+## Building
+### Database configuration
+* See `SourcePackagaes/DefaultPackage/hibernate.cfg.xml` for configuration file
+#### default settings
+* connectionUrl: `jdbc:mysql://127.0.0.1:3306/DnDBuddy?characterEncoding=latin1`
+* usernmae: `root`
+* password: `password`
+* dbName: `dbdbuddy`
+
+### Web Server
+The app was developed using `apache tomcat`, please use this while evaluating or developing the project.
+
+### Seed Data
+Seed data is controlled by the `create` param in `web.xml`
+```
+ <init-param>
+            <param-name>create</param-name>
+            <param-value>true</param-value>
+  </init-param>
+```
+
+When this is enabled your local DB will be wiped and the data will be reseeded with the sample data defined in `InitHibernate.java`
+
+
 
 ## Contributing
 Please create a new branch off of master whenever making changes, once you are done create a Pull Request for your code to be merged into master and another team member will review and approve.
