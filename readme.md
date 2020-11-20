@@ -12,6 +12,19 @@ This application will serve as a companion tool for people playing Dungeons and 
 ## Building
 ### Dependencies
 All library dependencies are located in the `lib` folder, if you are having issues building make sure netbeans is referencing all the .jar files in this folder
+
+### Seed Data
+#### Seed user info
+* Username: `testuser`
+* Password: `password`
+
+Seed data is controlled by the `create` param in `web.xml`
+```
+ <init-param>
+            <param-name>create</param-name>
+            <param-value>true</param-value>
+  </init-param>
+```
 ### Database configuration
 * See `SourcePackagaes/DefaultPackage/hibernate.cfg.xml` for configuration file
 #### default settings
@@ -23,14 +36,6 @@ All library dependencies are located in the `lib` folder, if you are having issu
 ### Web Server
 The app was developed using `apache tomcat`, please use this while evaluating or developing the project.
 
-### Seed Data
-Seed data is controlled by the `create` param in `web.xml`
-```
- <init-param>
-            <param-name>create</param-name>
-            <param-value>true</param-value>
-  </init-param>
-```
 
 When this is enabled your local DB will be wiped and the data will be reseeded with the sample data defined in `InitHibernate.java`
 
