@@ -25,6 +25,10 @@ Seed data is controlled by the `create` param in `web.xml`
             <param-value>true</param-value>
   </init-param>
 ```
+
+
+When this is enabled your local DB will be wiped and the data will be reseeded with the sample data defined in `InitHibernate.java`
+
 ### Database configuration
 * See `SourcePackagaes/DefaultPackage/hibernate.cfg.xml` for configuration file
 #### default settings
@@ -35,10 +39,6 @@ Seed data is controlled by the `create` param in `web.xml`
 
 ### Web Server
 The app was developed using `apache tomcat`, please use this while evaluating or developing the project.
-
-
-When this is enabled your local DB will be wiped and the data will be reseeded with the sample data defined in `InitHibernate.java`
-
 
 
 ## Contributing
