@@ -10,6 +10,8 @@ This application will serve as a companion tool for people playing Dungeons and 
 * Wyatt O'Steen
 
 ## Building
+### Dependencies
+All library dependancies are located in the `lib` folder, if you are having issues building make sure netbeans is referencing all the .jar files in this folder
 ### Database configuration
 * See `SourcePackagaes/DefaultPackage/hibernate.cfg.xml` for configuration file
 #### default settings
